@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Financial Dashboard</title>
+</head>
+<body>
+    <h1>Financial Dashboard</h1>
+    <div id="balance"></div>
+    <script>
+        // Fetch data from the backend
+        fetch("/balances")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("balance").innerHTML = "Account Balance: " + data.balance + " " + data.currency;
+            });
+    </script>
+</body>
+</html>
