@@ -1,17 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Dashboard</title>
 </head>
 <body>
-    <h1>Financial Dashboard</h1>
-    <div id="balance"></div>
+    <h1>Account Summary</h1>
+    <div id="accounts-list"></div>
+
     <script>
-        // Fetch data from the backend
-        fetch("/balances")
-            .then(response => response.json())
+        // Fetch the balances.json file
+        fetch('/balances.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
-                document.getElementById("balance").innerHTML = "Account Balance: " + data.balance + " " + data.currency;
+                // Get the accounts div
+                const accountsList = document.getElementById('accounts-list');
+
+                // Loop through the accounts array
+                data.accounts.forEach(account => {
+                    // Create a div for each account and append it to the accounts list
+                    const accountDiv = document.createElement('div');
+                    accountDiv.innerHTML = `
+                        <h3>${account.accountName}</h3>
+                        <p>Account ID: ${account.accountId}</p>
+                        <p>Balance: ${account.balance} ${account.currency}</p>
+                        <hr />
+                    `;
+                    accountsList.appendChild(accountDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
             });
     </script>
 </body>
